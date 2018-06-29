@@ -67,6 +67,10 @@ export default class App extends Component {
       }
     }
 
+    if (age < 0) {
+      age = `0 is another ${Math.abs(age)} years away`;
+    }
+
     this.setState({
       age,
       active: true
