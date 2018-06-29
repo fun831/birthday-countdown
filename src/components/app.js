@@ -29,21 +29,21 @@ export default class App extends Component {
   }
 
   handleChange = function (date) {
-    console.log('APP HANDLECHANGE', date._d)
-    clearInterval(this.timer);
     this.setState({
       startDate: date
     });
   }.bind(this)
 
   handleGenerate = function () {
+    clearInterval(this.timer);
+
     var bday = this.state.startDate.toDate();
     var today = new Date();
     var currentMonth = today.getMonth();
     var birthMonth = bday.getMonth();
 
     var timeBetween = today.getTime() - bday.getTime();
-    var daysOld = Math.floor((timeBetween / (1000 * 60 * 60 * 24)));
+    var daysOld = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
 
     if (birthMonth > currentMonth) {
       bday.setFullYear(today.getFullYear());
