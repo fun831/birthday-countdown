@@ -44,17 +44,14 @@ export default class App extends Component {
 
     var timeBetween = today.getTime() - bday.getTime();
     var daysOld = Math.floor((timeBetween / (1000 * 60 * 60 * 24)));
-    var age = Number((daysOld / 365).toFixed(0));
-    this.setState({
-      age,
-      active: true
-    });
 
     if (birthMonth > currentMonth) {
       bday.setFullYear(today.getFullYear());
+      var age = Number((daysOld / 365).toFixed(0));
     }
     else if (birthMonth < currentMonth) {
       bday.setFullYear(today.getFullYear() + 1);
+      var age = Number((daysOld / 365).toFixed(0)) + 1;
     }
     else if (birthMonth == currentMonth) {
       var currentDay = today.getDate();
@@ -62,17 +59,24 @@ export default class App extends Component {
 
       if (birthDay > currentDay) {
         bday.setFullYear(today.getFullYear());
+        var age = Number((daysOld / 365).toFixed(0));
       }
       if (birthDay <= currentDay) {
         bday.setFullYear(today.getFullYear() + 1);
+        var age = Number((daysOld / 365).toFixed(0)) + 1;
       }
     }
+
+    this.setState({
+      age,
+      active: true
+    });
 
     var countDownDate = bday.getTime();
 
     this.timer = setInterval(function () {
 
-      var now = today.getTime();
+      var now = moment().toDate().getTime();
       var distance = countDownDate - now;
 
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
