@@ -27,6 +27,7 @@ export default class App extends Component {
 
   handleChange = function (date) {
     console.log('APP HANDLECHANGE', date._d)
+    clearInterval(this.timer);
     this.setState({
       startDate: date
     });
@@ -77,7 +78,7 @@ export default class App extends Component {
   renderItems = function () {
     if (this.state.active) {
       return [
-        <Clock timeRemaining={ this.state.timeRemaining }/>,
+        <Clock timeRemaining={this.state.timeRemaining} />,
         ChangeDate('Change Date', () => this.setState({ active: false })),
         LargeText('04/03'),
         <label className='grid__remaining'>Remaining until your 21st bday</label>
