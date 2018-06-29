@@ -35,27 +35,38 @@ export default class App extends Component {
 
   handleGenerate = function () {
     this.setState({ active: true })
-    // set date being counted down to
-    // var countDownDate = new Date("Sep 5, 2018 15:37:25").getTime();
-    var countDownDate = this.state.startDate.toDate().getTime();
 
-    // Update the count down every 1 second
+    var bday = this.state.startDate.toDate();
+    var today = new Date();
+    var currentMonth = today.getMonth()
+    var birthMonth = bday.getMonth();
+
+    if (birthMonth > currentMonth) {
+      bday.setFullYear(today.getFullYear());
+    }
+    else if (birthMonth < currentMonth) {
+      bday.setFullYear(today.getFullYear() + 1);
+    }
+    else if (birthMonth == currentMonth) {
+      var currentDay = today.getDate();
+      var birthDay = bday.getDate();
+
+      if (birthDay <= currentDay) {
+        bday.setFullYear(today.getFullYear() + 1);
+      }
+    }
+
+    var countDownDate = bday.getTime();
+
     this.timer = setInterval(function () {
 
-      // get todays dat and time
-      var now = new Date().getTime();
-
-      // Find the distance between now and the count down date
+      var now = today.getTime();
       var distance = countDownDate - now;
 
-      // Time calculation for days, hours, minutes and seconds
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Output the result in an element with id="demo"
-      const time = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
       this.setState({
         timeRemaining: {
@@ -66,7 +77,6 @@ export default class App extends Component {
         }
       })
 
-      // If the count down is over, write some text
       if (distance < 0) {
         clearInterval(this.timer);
         // document.getElementById('demo').innerHTML = 'EXPIRED';
