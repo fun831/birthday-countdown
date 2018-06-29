@@ -2,12 +2,11 @@
     grid-column: 5/10;
     grid-row: 2/3;
     justify-self: center;
-    // background-color: cornflowerblue;
-    
+    align-self: end;
 
     input {
         font-size: 80px;
-        font-family: "Roboto Condensed";
+        font-family: $font-roboto;
         font-weight: bold;
         color: $color-grey-one;
 
