@@ -3,17 +3,60 @@ import Picker from './picker';
 import Button from './button';
 import Clock from './clock';
 import ChangeDate from './changeDate';
-import LargeText from './largeText'
+import LargeText from './largeText';
+import moment from 'moment';
 
 export default class App extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      active: false
+      active: false,
+      startDate: moment()
     }
   }
+
+  handleChange = function (date) {
+    console.log('APP HANDLECHANGE', date._d)
+    this.setState({
+      startDate: date
+    });
+  }.bind(this)
+
+  handleGenerate = function () {
+    this.setState({ active: true })
+    // set date being counted down to
+    // var countDownDate = new Date("Sep 5, 2018 15:37:25").getTime();
+    var countDownDate = this.state.startDate.toDate().getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function () {
+
+      // get todays dat and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculation for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Output the result in an element with id="demo"
+      const time = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+      console.log(time)
+
+      // If the count down is over, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        // document.getElementById('demo').innerHTML = 'EXPIRED';
+      }
+    }, 1000)
+  }.bind(this)
+
 
   renderItems = function () {
     if (this.state.active) {
@@ -25,8 +68,8 @@ export default class App extends Component {
       ]
     } else {
       return [
-        <Picker />,
-        Button('Generate Countdown', () => this.setState({ active: true }))
+        <Picker callBack={(date) => this.handleChange(date)} />,
+        Button('Generate Countdown', () => this.handleGenerate())
       ]
     }
   }.bind(this)
